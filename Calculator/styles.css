@@ -1,0 +1,308 @@
+/*
+  File: styles.css
+  Project: Glassmorphism Calculator (Competition Ready)
+  Author: Hidoyat Ruzmetov
+  Product Owner: CS Ambassadors, University of Arizona
+  Description: UA-themed glass UI + responsive keypad and canvas background.
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* University of Arizona vibe */
+  --ua-blue: #0C234B;
+  --ua-red: #AB0520;
+
+  /* Glass palette */
+  --panel: rgba(255, 255, 255, 0.10);
+  --panel-strong: rgba(255, 255, 255, 0.14);
+  --stroke: rgba(255, 255, 255, 0.18);
+  --stroke-strong: rgba(255, 255, 255, 0.26);
+
+  --text: rgba(255, 255, 255, 0.92);
+  --text-dim: rgba(255, 255, 255, 0.70);
+
+  --shadow: 0 18px 55px rgba(0, 0, 0, 0.58);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.40);
+
+  --radius: 22px;
+  --radius-sm: 16px;
+
+  /* Button surfaces */
+  --btn: rgba(255, 255, 255, 0.10);
+  --btn-hover: rgba(255, 255, 255, 0.14);
+  --btn-press: rgba(255, 255, 255, 0.08);
+
+  /* UA-tinged states */
+  --op: rgba(12, 35, 75, 0.32);
+  --op-hover: rgba(12, 35, 75, 0.40);
+
+  --warn: rgba(171, 5, 32, 0.28);
+  --warn-hover: rgba(171, 5, 32, 0.36);
+
+  --eq: rgba(171, 5, 32, 0.36);
+  --eq-hover: rgba(171, 5, 32, 0.46);
+
+  --focus: rgba(255, 255, 255, 0.38);
+
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background: radial-gradient(1200px 900px at 20% 0%, rgba(12, 35, 75, 0.95) 0%, rgba(5, 8, 18, 1) 55%),
+              radial-gradient(1000px 850px at 88% 20%, rgba(171, 5, 32, 0.30) 0%, rgba(5, 8, 18, 0.85) 60%);
+  overflow-x: hidden;
+}
+
+/* Canvas background */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+/* Foreground layout */
+.shell {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.calculator {
+  width: min(520px, 96vw);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+  border: 1px solid var(--stroke);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+/* Header */
+.calc-header {
+  padding: 18px 18px 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-soft);
+  font-weight: 900;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.title {
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.subtitle {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.status {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pill {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.90);
+  opacity: 0.25;
+  transition: opacity 160ms ease;
+}
+
+.pill.subtle {
+  opacity: 0.78;
+}
+
+/* Display */
+.display {
+  padding: 16px 18px 12px 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.display-top {
+  min-height: 22px;
+}
+
+.history {
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.2px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.current {
+  font-size: 44px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  text-align: right;
+  line-height: 1.05;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-bottom: 2px;
+}
+
+/* Keypad */
+.pad {
+  padding: 14px 14px 16px 14px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--btn);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  height: 54px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  transition: transform 90ms ease, background 160ms ease, border-color 160ms ease, filter 160ms ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+  border-color: rgba(255, 255, 255, 0.22);
+  filter: brightness(1.02);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+  background: var(--btn-press);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.btn-soft {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-op {
+  background: var(--op);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.btn-op:hover {
+  background: var(--op-hover);
+}
+
+.btn-warn {
+  background: var(--warn);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn-warn:hover {
+  background: var(--warn-hover);
+}
+
+.btn-eq {
+  background: var(--eq);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn-eq:hover {
+  background: var(--eq-hover);
+}
+
+.btn-wide2 {
+  grid-column: span 2;
+}
+
+/* Footer */
+.calc-footer {
+  padding: 10px 18px 16px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.footnote {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+
+.foot-strong {
+  color: rgba(255, 255, 255, 0.90);
+  font-weight: 800;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .calculator {
+    width: min(520px, 98vw);
+  }
+
+  .current {
+    font-size: 40px;
+  }
+
+  .btn {
+    height: 52px;
+    font-size: 17px;
+  }
+}

@@ -32,8 +32,7 @@ window.CalcOps = (function () {
    * @return {number} Difference.
    */
   function subtract(a, b) {
-    // ✏️ YOUR FIX HERE — Bug #1
-    return a + b;
+    return a - b;
   }
 
   /**
@@ -97,7 +96,7 @@ window.CalcOps = (function () {
     if (n > 170) return [false, 0]; /* Prevent Infinity in JS Number */
 
     let out = 1;
-    for (let i = 2; i < n; i++) out *= i;  // ✏️ YOUR FIX HERE — Bug #2
+    for (let i = 2; i <= n; i++) out *= i;
     return [true, out];
   }
 
@@ -107,7 +106,7 @@ window.CalcOps = (function () {
    * @return {number} Percent value.
    */
   function percent(x) {
-    return x / 10;  // ✏️ YOUR FIX HERE — Bug #3
+    return x / 100;
   }
 
   /**

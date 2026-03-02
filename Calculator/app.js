@@ -117,7 +117,7 @@
     const abs = Math.abs(value);
 
     // Large/small numbers go exponential for readability
-    if (abs !== 0 && (abs >= 1e12 || abs < 1e-4)) {  // ✏️ YOUR FIX HERE — Bug #6
+    if (abs !== 0 && (abs >= 1e12 || abs < 1e-9)) {
       return value.toExponential(8).replace("+", "");
     }
 
@@ -143,7 +143,7 @@
    * @return {boolean} True if operator.
    */
   function isOperator(t) {
-    return t === "+" || t === "-" || t === "*" || t === "/";  // ✏️ YOUR FIX HERE — Bug #4
+    return t === "+" || t === "-" || t === "*" || t === "/" || t === "^";
   }
 
   /**
@@ -194,7 +194,7 @@
     let bal = 0;
     for (const t of state.tokens) {
       if (t === "(") bal++;
-      // ✏️ YOUR FIX HERE — Bug #5 (a line is missing here)
+      if (t === ")") bal--;
     }
     return bal;
   }
@@ -875,7 +875,7 @@
    */
   function precedence(op) {
     if (op === "u-") return 4;   // unary minus
-    if (op === "^") return 2;  // ✏️ YOUR FIX HERE — Bug #8
+    if (op === "^") return 3;    // power (right associative)
     if (op === "*" || op === "/") return 2;
     if (op === "+" || op === "-") return 1;
     return 0;
@@ -887,7 +887,7 @@
    * @return {boolean} True if right associative.
    */
   function isRightAssociative(op) {
-    return op === "u-";  // ✏️ YOUR FIX HERE — Bug #9
+    return op === "^" || op === "u-";
   }
 
   /**
@@ -1054,7 +1054,7 @@
         if (t === "*") out = CalcOps.multiply(a, b);
 
         if (t === "/") {
-          const res = CalcOps.divide(b, a);  // ✏️ YOUR FIX HERE — Bug #7
+          const res = CalcOps.divide(a, b); // [ok, value]
           if (!res[0]) return [false, 0, "Cannot divide by zero."];
           out = res[1];
         }
@@ -1143,7 +1143,7 @@
 
   function memoryClear() {
     state.memory = 0;
-    state.memorySet = true;  // ✏️ YOUR FIX HERE — Bug #10
+    state.memorySet = false;
     render();
   }
 
