@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UA Speed Lab — Car Tuning Challenge</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">UA</div>
+      <div>
+        <div class="brand-title">Speed Lab</div>
+        <div class="brand-sub">Car Tuning Challenge (HTML/CSS/JS)</div>
+      </div>
+    </div>
+
+    <div class="pill">
+      <span class="dot"></span>
+      <span id="statusText">Ready</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card hero">
+      <div class="hero-left">
+        <h1>Make the fastest car — by tuning code variables.</h1>
+        <p class="muted">
+          Your goal: finish the <strong>100 m</strong> track in the <strong>least time</strong>.
+          You may edit only <code>config.js</code> (tires, spoiler, surface, grade, etc.).
+          Don’t change the timer or physics engine.
+        </p>
+
+        <div class="actions">
+          <button id="startBtn" class="btn primary">Start race</button>
+          <button id="resetBtn" class="btn">Reset</button>
+          <button id="showRulesBtn" class="btn ghost">Rules</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Time</div>
+            <div class="stat-value"><span id="timeVal">—</span> <span class="unit">s</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Speed</div>
+            <div class="stat-value"><span id="speedVal">—</span> <span class="unit">m/s</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Distance</div>
+            <div class="stat-value"><span id="distVal">—</span> <span class="unit">m</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Best (this browser)</div>
+            <div class="stat-value"><span id="bestVal">—</span> <span class="unit">s</span></div>
+          </div>
+        </div>
+
+        <div class="hint">
+          <span class="hint-badge">Tip</span>
+          Edit <code>config.js</code> ➜ try different tires and spoiler settings for your surface.
+          Downforce can increase traction, but drag slows you down at higher speeds.
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="track-card">
+          <div class="track-top">
+            <div class="track-title">Track</div>
+            <div class="track-meta">
+              <span id="trackMeta">100 m · Flat · Asphalt</span>
+            </div>
+          </div>
+
+          <div class="track">
+            <div class="lane-lines"></div>
+            <div class="start-line" title="Start"></div>
+            <div class="finish-line" title="Finish"></div>
+
+            <div id="car" class="car" aria-label="Car">
+              <div class="car-body">
+                <div class="car-window"></div>
+                <div class="car-spoiler" id="carSpoiler"></div>
+              </div>
+              <div class="wheel w1"></div>
+              <div class="wheel w2"></div>
+            </div>
+
+            <div id="countdown" class="countdown" aria-live="polite"></div>
+            <div id="banner" class="banner" aria-live="polite"></div>
+          </div>
+
+          <div class="track-bottom">
+            <div class="mini">
+              <div class="mini-label">Surface friction</div>
+              <div class="bar"><div id="muBar" class="fill"></div></div>
+            </div>
+            <div class="mini">
+              <div class="mini-label">Aero drag</div>
+              <div class="bar"><div id="dragBar" class="fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card grid">
+      <div>
+        <h2>Current tuning (from <code>config.js</code>)</h2>
+        <p class="muted small">
+          These values are read-only by default. Teachers can add <code>?unlock=1</code> to enable UI controls.
+        </p>
+        <div class="config-grid" id="configGrid"></div>
+      </div>
+
+      <div>
+        <h2>Physics (simple, understandable)</h2>
+        <ul class="bullets">
+          <li><strong>Drive force</strong> pushes the car forward (limited by engine + traction).</li>
+          <li><strong>Traction</strong> depends on tire grip × surface friction × normal force (weight + downforce).</li>
+          <li><strong>Drag</strong> grows with speed² and increases if a spoiler is installed.</li>
+          <li><strong>Rolling resistance</strong> always slows you down a little.</li>
+          <li><strong>Slope</strong> (grade) helps downhill and hurts uphill.</li>
+        </ul>
+
+        <div class="callout">
+          <div class="callout-title">How to compete</div>
+          <div class="callout-body">
+            <ol>
+              <li>Open <code>config.js</code></li>
+              <li>Change tires / spoiler / surface / grade</li>
+              <li>Save → refresh browser → race</li>
+              <li>Lowest time wins</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>UA Speed Lab — classroom-friendly coding activity</div>
+      <div class="muted">Edit <code>config.js</code> only • No external libraries</div>
+    </footer>
+  </main>
+
+  <dialog id="rulesDialog" class="dialog">
+    <div class="dialog-head">
+      <h3>Competition rules</h3>
+      <button class="btn ghost" id="closeRulesBtn">Close</button>
+    </div>
+    <div class="dialog-body">
+      <ul class="bullets">
+        <li>Edit <strong>only</strong> <code>config.js</code>. Do not change the timer or physics code.</li>
+        <li>Goal: smallest finish time over 100 m.</li>
+        <li>Discuss: why did your changes help or hurt? What tradeoffs did you notice?</li>
+      </ul>
+      <p class="muted small">
+        Teacher note: run with <code>?unlock=1</code> if you want students to test ideas in the UI first, then
+        require final submissions by editing <code>config.js</code>.
+      </p>
+    </div>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
