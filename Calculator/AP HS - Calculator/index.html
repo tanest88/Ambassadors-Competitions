@@ -1,0 +1,115 @@
+<!--
+  File: index.html
+  Project: Glassmorphism Calculator (Competition Ready)
+  Author: Hidoyat Ruzmetov
+  Product Owner: CS Ambassadors, University of Arizona
+  Description: Polished calculator UI with canvas-based interactive background.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0C234B" />
+  <title>UA Glass Calculator</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Interactive geometric background (pure canvas, driven by app.js) -->
+  <canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+  <main class="shell">
+    <section class="calculator" aria-label="Calculator">
+      <header class="calc-header">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">A</div>
+          <div class="brand-text">
+            <div class="title">UA Glass Calculator</div>
+            <div class="subtitle">AP HS Scholars · Tucson · JS Competition</div>
+          </div>
+        </div>
+
+        <div class="status" aria-label="Calculator status">
+          <span class="pill" id="memIndicator" title="Memory indicator">M</span>
+          <span class="pill subtle" title="Keyboard: 0-9, + - * / ^ ( ), Enter, Backspace, Esc, !, %, p=π, e=e">⌨</span>
+        </div>
+      </header>
+
+      <!-- Display -->
+      <div class="display" role="group" aria-label="Calculator display">
+        <div class="display-top">
+          <div class="history" id="history" aria-label="Expression history"> </div>
+        </div>
+        <div class="display-bottom">
+          <div class="current" id="current" aria-label="Current value">0</div>
+        </div>
+      </div>
+
+      <!-- Keypad (5-column layout to fit full features cleanly) -->
+      <div class="pad" role="group" aria-label="Calculator buttons">
+        <!-- Row 1 -->
+        <button class="btn btn-soft" data-action="mc" aria-label="Memory clear">MC</button>
+        <button class="btn btn-soft" data-action="mr" aria-label="Memory recall">MR</button>
+        <button class="btn btn-soft" data-action="mplus" aria-label="Memory add">M+</button>
+        <button class="btn btn-soft" data-action="mminus" aria-label="Memory subtract">M-</button>
+        <button class="btn btn-warn" data-action="ac" aria-label="All clear">AC</button>
+
+        <!-- Row 2 -->
+        <button class="btn btn-soft" data-action="lparen" aria-label="Left parenthesis">(</button>
+        <button class="btn btn-soft" data-action="rparen" aria-label="Right parenthesis">)</button>
+        <button class="btn btn-soft" data-action="const" data-value="pi" aria-label="Pi">π</button>
+        <button class="btn btn-soft" data-action="const" data-value="e" aria-label="Euler's number">e</button>
+        <button class="btn btn-soft" data-action="ce" aria-label="Clear entry">CE</button>
+
+        <!-- Row 3 -->
+        <button class="btn btn-soft" data-action="power" aria-label="Power">xʸ</button>
+        <button class="btn btn-soft" data-action="factorial" aria-label="Factorial">!</button>
+        <button class="btn btn-soft" data-action="sqrt" aria-label="Square root">√</button>
+        <button class="btn btn-soft" data-action="square" aria-label="Square">x²</button>
+        <button class="btn btn-soft" data-action="backspace" aria-label="Backspace">⌫</button>
+
+        <!-- Row 4 -->
+        <button class="btn" data-action="digit" data-value="7" aria-label="7">7</button>
+        <button class="btn" data-action="digit" data-value="8" aria-label="8">8</button>
+        <button class="btn" data-action="digit" data-value="9" aria-label="9">9</button>
+        <button class="btn btn-op" data-action="op" data-value="/" aria-label="Divide">÷</button>
+        <button class="btn btn-soft" data-action="percent" aria-label="Percent">%</button>
+
+        <!-- Row 5 -->
+        <button class="btn" data-action="digit" data-value="4" aria-label="4">4</button>
+        <button class="btn" data-action="digit" data-value="5" aria-label="5">5</button>
+        <button class="btn" data-action="digit" data-value="6" aria-label="6">6</button>
+        <button class="btn btn-op" data-action="op" data-value="*" aria-label="Multiply">×</button>
+        <button class="btn btn-soft" data-action="reciprocal" aria-label="Reciprocal">1/x</button>
+
+        <!-- Row 6 -->
+        <button class="btn" data-action="digit" data-value="1" aria-label="1">1</button>
+        <button class="btn" data-action="digit" data-value="2" aria-label="2">2</button>
+        <button class="btn" data-action="digit" data-value="3" aria-label="3">3</button>
+        <button class="btn btn-op" data-action="op" data-value="-" aria-label="Subtract">−</button>
+        <button class="btn btn-soft" data-action="toggleSign" aria-label="Toggle sign">±</button>
+
+        <!-- Row 7 -->
+        <button class="btn btn-wide2" data-action="digit" data-value="0" aria-label="0">0</button>
+        <button class="btn" data-action="decimal" aria-label="Decimal point">.</button>
+        <button class="btn btn-op" data-action="op" data-value="+" aria-label="Add">+</button>
+        <button class="btn btn-eq" data-action="equals" aria-label="Equals">=</button>
+      </div>
+
+      <footer class="calc-footer">
+        <div class="footnote">
+          Author: <span class="foot-strong">Hidoyat Ruzmetov</span> · Product Owner:
+          <span class="foot-strong">CS Ambassadors, University of Arizona</span>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Core functions first, runner second -->
+  <script src="calcFunctions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
